@@ -502,7 +502,7 @@ def _train_async(model: Model,
     if parameter_checkpoint is not None:
         print("Restoring parameters from %s" % parameter_checkpoint)
         saver = tf.train.Saver()
-        saver.restore(sess, checkpoint)
+        saver.restore(sess, parameter_checkpoint)
         saver = None
 
     print("Setting up model prediction / tf...")
@@ -537,8 +537,13 @@ def _train_async(model: Model,
         saver.restore(sess, checkpoint)
         print("Loaded checkpoint: " + str(sess.run(global_step)))
     else:
-        print("Initializing parameters...")
-        sess.run(tf.global_variables_initializer())
+        if parameter_checkpoint is not None:
+            print("Initializing training variables...")
+            vars = [x for x in tf.global_variables() if x not in tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES)]
+            sess.run(tf.variables_initializer(vars))
+        else:
+            print("Initializing parameters...")
+            sess.run(tf.global_variables_initializer())
 
     # Make sure no bugs occur that add to the graph in the train loop, that can cause (eventuall) OOMs
     tf.get_default_graph().finalize()
