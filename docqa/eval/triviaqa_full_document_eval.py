@@ -113,7 +113,8 @@ def main():
                         help="Max answer span to select")
     parser.add_argument('-c', '--corpus',
                         choices=["web-dev", "web-test", "web-verified-dev", "web-train",
-                                 "open-dev", "open-train", "wiki-dev", "wiki-test"],
+                                 "open-dev", "open-train", "open-test",
+                                 "wiki-dev", "wiki-test"],
                         default="web-verified-dev")
     args = parser.parse_args()
 
@@ -146,6 +147,8 @@ def main():
             test_questions = dataset.get_dev()
         elif args.corpus == "open-train":
             test_questions = dataset.get_train()
+        elif args.corpus == "open-test":
+            test_questions = dataset.get_test()
         else:
             raise AssertionError()
 

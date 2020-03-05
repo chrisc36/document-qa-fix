@@ -4,8 +4,8 @@ from os.path import join, expanduser, dirname
 Global config options
 """
 
-VEC_DIR = join(expanduser("~"), "data", "glove")
-SQUAD_SOURCE_DIR = join(expanduser("~"), "data", "squad")
+VEC_DIR = join(expanduser("~"), "data", "word-vectors")
+SQUAD_SOURCE_DIR = join(expanduser("~"), "data", "squad_1.1")
 SQUAD_TRAIN = join(SQUAD_SOURCE_DIR, "train-v1.1.json")
 SQUAD_DEV = join(SQUAD_SOURCE_DIR, "dev-v1.1.json")
 

@@ -74,7 +74,9 @@ class Configurable(object):
             if isinstance(v, Configurable):
                 out[key] = v.get_config()
             elif hasattr(v, "get_config"):  # for keras objects
-                out[key] = {"name": v.__class__.__name__, "config": v.get_config()}
+                print("DEBUG")
+                out[key] = "DUMMY"
+                # out[key] = {"name": v.__class__.__name__, "config": v.get_config()}
             else:
                 out[key] = v
         return out

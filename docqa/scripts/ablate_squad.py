@@ -10,6 +10,7 @@ from docqa.data_processing.qa_training_data import ContextLenBucketedKey, Contex
 from docqa.data_processing.text_utils import NltkPlusStopWords
 from docqa.dataset import ClusteredBatcher
 from docqa.evaluator import LossEvaluator, MultiParagraphSpanEvaluator, SpanEvaluator
+from docqa.model_dir import ModelDir
 from docqa.scripts.ablate_triviaqa import get_model
 from docqa.squad.squad_data import SquadCorpus, DocumentQaTrainingData
 from docqa.squad.squad_document_qa import SquadTfIdfRanker
@@ -39,7 +40,9 @@ def main():
     else:
         pre = None
 
-    model = get_model(50, 100, args.mode, pre)
+    # model = get_model(50, 100, args.mode, pre)
+    tmp = ModelDir("models/squad-shared-norm")
+    model = tmp.get_model()
 
     if mode == "paragraph":
         # Run in the "standard" known-paragraph setting
@@ -94,7 +97,8 @@ def main():
     if mode == "paragraph":
         params.best_weights = ("dev", "b17/text-f1")
 
-    trainer.start_training(data, model, params, eval, model_dir.ModelDir(out), notes)
+    trainer.start_training(data, model, params, eval, model_dir.ModelDir(out), notes,
+                           initialize_from=tmp.get_best_weights())
 
 
 if __name__ == "__main__":
